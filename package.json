@@ -1,0 +1,24 @@
+{
+  "name": "stychat",
+  "private": true,
+  "version": "1.6.0",
+  "description": "Stychat by Win Stydio - emoji profile personalization and media sharing",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n API,WEB -c green,cyan \"npm run dev -w apps/api\" \"npm run dev -w apps/web\"",
+    "build": "npm run build -w apps/api && npm run build -w apps/web",
+    "start": "npm run start -w apps/api",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,json,css,html}\" \"*.json\" \"*.md\" \"docs/**/*.md\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,tsx,json,css,html}\" \"*.json\" \"*.md\" \"docs/**/*.md\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

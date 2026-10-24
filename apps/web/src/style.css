@@ -2381,3 +2381,146 @@ html[data-theme="dark"] .message-row.mine .message-bubble { color: #effff5; back
 .settings-tabs { display:flex; gap:7px; padding:0 24px 14px; border-bottom:1px solid var(--line); }
 .settings-tabs button { border:1px solid var(--line); background:var(--panel); color:var(--muted); padding:9px 13px; border-radius:10px; font-size:12px; font-weight:750; cursor:pointer; }
 .settings-tabs button.active { background:var(--green-soft); border-color:var(--green); color:var(--green-dark); }
+
+
+/* Stychat 1.7.0 · Fresh visual system: editorial ivory, forest rail, crisp surfaces */
+:root {
+  --bg: #eef3ef;
+  --panel: #ffffff;
+  --panel-soft: #f5f8f5;
+  --text: #172a20;
+  --muted: #7c8d82;
+  --line: #e2eae4;
+  --green: #1dbb73;
+  --green-dark: #087847;
+  --green-soft: #e3f8ec;
+  --shadow: 0 18px 48px rgba(18, 52, 31, .08);
+  --surface-glow: rgba(29, 187, 115, .08);
+}
+html[data-theme="dark"] {
+  --bg: #101a14;
+  --panel: #17241b;
+  --panel-soft: #1d2d22;
+  --text: #eff8f1;
+  --muted: #9caf9f;
+  --line: #2b4031;
+  --green: #49df94;
+  --green-dark: #6ce9a9;
+  --green-soft: #203d2b;
+  --shadow: 0 18px 48px rgba(0, 0, 0, .24);
+  --surface-glow: rgba(73, 223, 148, .08);
+}
+body { background: var(--bg); }
+.app-shell {
+  height: 100dvh;
+  min-height: 560px;
+  grid-template-columns: 76px minmax(285px, 326px) minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+}
+.app-shell .rail {
+  border: 0;
+  border-radius: 23px;
+  padding: 18px 0 14px;
+  background: #103b28;
+  color: #d9f4e4;
+  box-shadow: 0 12px 32px rgba(13, 56, 33, .15);
+}
+html[data-theme="dark"] .app-shell .rail { background: #092b1b; }
+.rail-logo {
+  width: 45px; height: 45px; margin-bottom: 23px;
+  border-radius: 16px;
+  background: #6ef0ad;
+  color: #0c3b25;
+  box-shadow: 0 8px 22px rgba(67, 235, 147, .2);
+}
+.rail-button { width: 61px; min-height: 57px; border-radius: 15px; color: #a4c8b2; font-size: 9px; }
+.rail-button:hover { color: #fff; background: rgba(255,255,255,.08); }
+.rail-button.active { color: #8af4b9; background: rgba(103, 238, 161, .13); border-color: rgba(133, 246, 180, .2); box-shadow: inset 3px 0 #6ef0ad; }
+.rail-user { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.08); padding: 4px; }
+.sidebar, .conversation {
+  min-height: 0;
+  border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+  border-radius: 23px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.sidebar { background: var(--panel); }
+.sidebar-header { padding: 25px 22px 18px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 7px; color: var(--green-dark); font-size: 9px; letter-spacing: 1.7px; }
+.sidebar-header h1 { font-size: 28px; letter-spacing: -1.3px; margin-top: 7px; }
+.round-button { width: 39px; height: 39px; border-radius: 13px; }
+.self-card { margin: 0 14px 17px; padding: 12px; border-radius: 17px; background: var(--panel-soft); box-shadow: none; }
+.search-box { height: 44px; margin: 0 14px 13px; border-radius: 13px; background: var(--panel-soft); }
+.filter-row { margin: 0 14px 15px; }
+.list-label { padding-left: 20px; padding-right: 20px; letter-spacing: 1.45px; }
+.contact-list { padding: 0 9px 12px; gap: 4px; }
+.list-row { min-height: 68px; border-radius: 15px; padding: 10px; }
+.list-row.selected { box-shadow: inset 3px 0 var(--green); }
+.sidebar-footer { margin: auto 12px 12px; border-radius: 15px; }
+.conversation {
+  background: radial-gradient(ellipse at 92% 0%, var(--surface-glow), transparent 34%), var(--panel);
+  display: flex;
+  flex-direction: column;
+}
+.conversation-header {
+  height: 78px; flex-shrink: 0; padding: 0 26px;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+}
+.person-summary strong { font-size: 14px; }
+.connection-pill { border-radius: 999px; }
+.conversation-body { padding: 26px clamp(22px, 4vw, 64px) 22px; }
+.history-divider { margin-bottom: 2px; }
+.message-bubble { box-shadow: 0 3px 12px rgba(20, 57, 35, .035); }
+.message-row.mine .message-bubble { background: #dff8e9; border-color: #ccefd9; color: #16432b; }
+html[data-theme="dark"] .message-row.mine .message-bubble { background: #214a32; border-color: #315e40; color: #effff4; }
+.composer {
+  margin: 0 clamp(22px, 4vw, 64px) 22px;
+  border-radius: 19px;
+  box-shadow: 0 9px 28px rgba(17, 58, 34, .07);
+}
+.send-button { border-radius: 12px; background: var(--green-dark); }
+.send-button:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.welcome-screen { max-width: 680px; }
+.welcome-banner { border-radius: 28px; }
+.welcome-logo { box-shadow: 0 18px 40px rgba(16, 115, 62, .23); }
+.welcome-screen h2 { letter-spacing: -2px; }
+.auth-shell { background: radial-gradient(ellipse at 8% 5%, rgba(38, 211, 126, .17), transparent 32%), radial-gradient(ellipse at 92% 92%, rgba(18, 133, 77, .12), transparent 35%), #edf4ee; }
+.auth-card { border: 1px solid rgba(219, 233, 222, .9); }
+.modal { border: 1px solid var(--line); }
+@media (max-width: 1120px) {
+  .app-shell { grid-template-columns: 68px 285px minmax(0, 1fr); gap: 9px; padding: 9px; }
+  .app-shell .rail, .sidebar, .conversation { border-radius: 19px; }
+  .conversation-header { padding: 0 18px; }
+  .conversation-body { padding-left: 20px; padding-right: 20px; }
+  .composer, .message-tools { margin-left: 20px; margin-right: 20px; }
+}
+@media (max-width: 760px) {
+  .app-shell { grid-template-columns: 54px minmax(0, 1fr); gap: 7px; padding: 7px; }
+  .app-shell .rail { border-radius: 17px; padding-top: 12px; }
+  .rail-logo { width: 38px; height: 38px; border-radius: 13px; margin-bottom: 15px; }
+  .rail-button { width: 44px; min-height: 48px; font-size: 7px; border-radius: 12px; }
+  .sidebar, .conversation { border-radius: 17px; }
+  .sidebar-header { padding: 18px 14px 14px; }
+  .sidebar-header h1 { font-size: 23px; }
+  .self-card { margin-left: 9px; margin-right: 9px; }
+  .search-box { margin-left: 9px; margin-right: 9px; }
+  .filter-row { margin-left: 9px; margin-right: 9px; }
+  .conversation-header { height: 66px; padding: 0 10px; }
+  .conversation-body { padding: 15px 10px; }
+  .composer { margin: 0 8px 9px; }
+  .message-tools { margin-left: 8px; margin-right: 8px; }
+}
+@media (max-width: 400px) {
+  .app-shell { grid-template-columns: 46px minmax(0, 1fr); gap: 5px; padding: 5px; }
+  .rail-button { width: 39px; }
+  .sidebar { left: 46px; width: calc(100% - 46px); }
+}
+
+
+/* Stychat 1.8.0: compact reply action */
+.message-reply-action { display:inline-flex; align-items:center; gap:5px; align-self:flex-start; border:0; background:transparent; color:var(--muted, #718078); padding:3px 5px; margin-top:3px; border-radius:7px; font:inherit; font-size:10px; cursor:pointer; opacity:.78; transition:background .15s ease,color .15s ease,opacity .15s ease; }
+.message-reply-action:hover { background:var(--line); color:var(--accent, #159b64); opacity:1; }

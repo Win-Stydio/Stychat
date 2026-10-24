@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Crown, Info, Users, X } from 'lucide-react';
 import { Avatar } from './Avatar';
 import { request } from '../lib/api';
+import { participantLabel } from '../utils/format';
 import type { Group, GroupMember } from '../types';
 type GroupDetailsModalProps = {
     group: Group;
@@ -63,7 +64,7 @@ export function GroupDetailsModal({ group, token, onClose, onOpenProfile, }: Gro
 
         <div className="group-details-summary">
           <Info size={17}/>
-          <span>{group.memberCount} участника{group.memberCount === 1 ? '' : 'ов'}</span>
+          <span>{participantLabel(group.memberCount)}</span>
         </div>
 
         <div className="member-picker group-details-members">

@@ -2,6 +2,7 @@ import type { FormEvent, Dispatch, SetStateAction } from 'react';
 import { Users, X } from 'lucide-react';
 import { Avatar } from './Avatar';
 import type { Group, User } from '../types';
+import { participantLabel } from '../utils/format';
 
 type CreateGroupModalProps = {
   users: User[];
@@ -53,7 +54,7 @@ export function CreateGroupModal({
           <Avatar name={groupName || 'Новая группа'} id={groupCount + 3} group size="large" />
           <div>
             <strong>{groupName || 'Название группы'}</strong>
-            <span>{selectedMembers.length + 1} участника, включая тебя</span>
+            <span>{participantLabel(selectedMembers.length + 1)}, включая тебя</span>
           </div>
         </div>
 

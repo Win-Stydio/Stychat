@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/authscreen.tsx","./src/components/avatar.tsx","./src/components/creategroupmodal.tsx","./src/components/groupdetailsmodal.tsx","./src/components/profilemodal.tsx","./src/components/settingsmodal.tsx","./src/lib/api.ts","./src/utils/format.ts"],"version":"5.7.3"}

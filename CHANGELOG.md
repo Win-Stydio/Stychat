@@ -1,3 +1,13 @@
+# Changelog
+
+## [1.7.0] - 2026-10-24
+
+### Changed
+- Major visual refresh with a forest-green navigation rail, lighter editorial surfaces, floating rounded panels, clearer spacing, and refined chat bubbles.
+- Reworked responsive layout styling for desktop, tablet, and mobile widths.
+- Unified light and dark theme tokens while retaining the existing theme behavior.
+- Preserved existing chat, group, profile, media, settings, and server interaction logic; this release focuses on presentation.
+
 # Stychat 1.6.0
 
 - Добавлен сохраняемый emoji-аватар в профиле.

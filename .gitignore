@@ -4,23 +4,3 @@ node_modules/
 apps/api/data/
 .env
 .DS_Store
-.vscode/
-
-# Local environment and secrets
-.env
-.env.*
-!.env.example
-
-# Local databases and backups
-*.db
-*.sqlite
-*.sqlite3
-*.db-journal
-*.sqlite-journal
-
-# Logs and temporary files
-*.log
-npm-debug.log*
-
-# TypeScript build cache
-*.tsbuildinfo

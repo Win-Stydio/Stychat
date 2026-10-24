@@ -4,3 +4,6 @@ node_modules/
 apps/api/data/
 .env
 .DS_Store
+
+# Private local database backups
+backups/

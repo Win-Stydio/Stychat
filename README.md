@@ -1,79 +1,65 @@
-# Stychat 1.5.1 · Win Stydio Messenger
+# Stychat 1.8.0 для PostgreSQL
 
-**Stychat by Win Stydio** is an independent web messenger with a refreshed desktop-messenger interface, profile cards, groups, configurable light/dark themes, and real-time messaging. Stychat has its own emerald visual identity and does not use Viber branding or assets.
+Это полный исходный проект Stychat 1.8.0, в который добавлена версия API для PostgreSQL.
 
-## Stychat 1.5.1 visual refresh
+## Важно перед запуском
 
-- Cohesive emerald visual system across the navigation rail, sidebar, conversations, composer, dialogs, and sign-in screen.
-- Clearer active-chat state, refined search and filter controls, smoother interaction feedback, and improved dark theme surfaces.
-- Responsive layout refinements and reduced-motion accessibility support.
+- Архив подготовлен на основе проекта 1.8.0 и набора миграции. Он **не был собран и протестирован в вашей локальной среде**, поэтому сначала проверьте сборку.
+- Не удаляйте старую SQLite-базу и резервные копии, пока не убедитесь, что всё работает.
+- Не отправляйте в GitHub файлы базы, JSON-экспорт, реальные пароли или секреты.
 
-## What's included
+## 1. Установка
 
-- Account registration and login with bcryptjs password hashes and signed JWT sessions
-- Persistent direct messages in SQLite and live delivery through Socket.IO
-- Contact list, search, unread counters, read receipts, and typing indicator
-- Public profile cards showing display name, username, and status
-- Separate React components for authentication, settings, profile cards, group creation, and group details
-- Settings panel with editable display name/status and persistent light/dark theme preference
-- Group creation with a name, description, and selected members
-- Group details window with a member list, creator label, and shortcuts to member profile cards
-- Persistent group message history and real-time group messaging
-- Emoji picker and responsive desktop/mobile layout
-- Backward-compatible database initialization and migrations for existing accounts and direct messages
+Откройте PowerShell в папке проекта и выполните:
 
-## Requirements
+```powershell
+npm install
+npm install pg -w apps/api
+npm install -D @types/pg -w apps/api
+```
 
-- Node.js 20 or newer
-- npm
+## 2. Настройка PostgreSQL
 
-## Run on Windows (PowerShell)
+Создайте пустую базу PostgreSQL. Скопируйте `.env.example` в `.env` и заполните `DATABASE_URL` и `JWT_SECRET`. Не публикуйте `.env`.
 
-1. Extract the ZIP and open PowerShell in the `Stychat` folder.
-2. Install packages:
+Для локального запуска укажите `CLIENT_ORIGIN=http://localhost:5173`. Для сайта на Vercel укажите `CLIENT_ORIGIN=https://stychat.vercel.app`.
 
-   ```powershell
-   npm install
-   ```
+Примените схему из корня проекта:
 
-3. Create the API environment file if needed:
+```powershell
+psql "$env:DATABASE_URL" -v ON_ERROR_STOP=1 -f .\apps\api\migrations\001_init.sql
+```
 
-   ```powershell
-   Copy-Item .env.example apps/api/.env
-   ```
+Команда требует установленного PostgreSQL `psql` и доступной строки подключения.
 
-   If `apps/api/.env` already exists, keep it. Set `JWT_SECRET` to a long random secret before any public deployment.
+## 3. Перенос старых данных (если нужен)
 
-4. Start the API and web client together:
+Импортёр ожидает локальный файл `backups/sqlite/stychat-export.json`. Если такого экспорта нет, не запускайте команду, пока не создадите экспорт из старой SQLite-базы. Импорт выполняется только в пустые таблицы.
 
-   ```powershell
-   npm run dev
-   ```
+```powershell
+node .\apps\api\scripts\import-sqlite-export.mjs .\backups\sqlite\stychat-export.json
+```
 
-5. Open `http://localhost:5173`. To test direct and group chats, create multiple accounts in separate browsers or a normal and private window.
+Экспорт содержит данные аккаунтов, хеши паролей и переписки. Храните его только локально.
 
-The API runs on `http://localhost:3001`; its health endpoint is `http://localhost:3001/api/health`. The SQLite database is stored in `apps/api/data/stychat.sqlite` when started from the workspace root.
-
-## Build
+## 4. Сборка и запуск
 
 ```powershell
 npm run build
+npm run dev
 ```
 
-The API build output is written to `apps/api/dist` and the frontend output to `apps/web/dist`.
+Проверьте API по адресу `http://localhost:3001/api/health`. Затем проверьте регистрацию, вход, личные сообщения, группы, поиск и отправку файлов.
 
-## Updating an existing Stychat folder
+## 5. Развёртывание
 
-1. Stop Stychat.
-2. Back up `apps/api/data/stychat.sqlite` and `apps/api/.env`.
-3. Extract this archive into a **separate temporary folder** first.
-4. Copy the source files into your project, but do not replace `.env` or the SQLite database.
-5. Run `npm install` and `npm run dev`.
+Для API на Render:
 
-Group tables are created automatically when the API starts. Existing accounts and direct-message history are not intentionally deleted. Keep a backup before upgrading.
+- Build Command: `npm install && npm run build -w apps/api`
+- Start Command: `npm run start -w apps/api`
+- Health Check Path: `/api/health`
+- Переменные: `DATABASE_URL`, `JWT_SECRET`, `CLIENT_ORIGIN=https://stychat.vercel.app`, `NODE_ENV=production`
 
-## Current limitations
+В настройках Vercel установите `VITE_API_URL` равным базовому URL опубликованного API и выполните повторное развёртывание.
 
-This is an early milestone, not a production-ready replacement for Viber. It currently supports text-only direct and group chats. File uploads, avatar uploads, group member management after creation, push notifications, voice/video calls, end-to-end encryption, password recovery, email verification, rate limiting, moderation/reporting, and hardened production session handling are not included. The browser session token is stored in `localStorage`; use HTTPS, a strong secret, abuse controls, monitoring, backups, and a security review before public deployment.
-
-Made by **Win Stydio**.
+**Важно:** загруженные медиафайлы пока хранятся на локальном диске сервера. На Render они могут пропасть после перезапуска/переразмещения. Для постоянного хранения потребуется отдельное хранилище или постоянный диск.

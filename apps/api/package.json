@@ -10,23 +10,24 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.8.1",
+    "body-parser": "^1.20.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "socket.io": "^4.8.1",
-    "body-parser": "^1.20.9"
+    "pg": "^8.23.1",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/better-sqlite3": "^7.6.12",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.13.4",
+    "@types/pg": "^8.23.1",
     "tsx": "^4.19.3",
-    "typescript": "^5.7.3",
-    "@types/bcryptjs": "^2.4.6"
+    "typescript": "^5.7.3"
   },
   "description": "Stychat by Win Stydio - emoji profile personalization and media sharing"
 }

@@ -45,7 +45,6 @@ export default function App() {
     const [pageError, setPageError] = useState('');
     const [emojiOpen, setEmojiOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
-    const [settingsSection, setSettingsSection] = useState<'profile' | 'general'>('general');
     const [profileOpen, setProfileOpen] = useState<User | null>(null);
     const [createGroupOpen, setCreateGroupOpen] = useState(false);
     const [groupInfoOpen, setGroupInfoOpen] = useState(false);
@@ -344,7 +343,15 @@ export default function App() {
         else
             socketRef.current.emit('typing:stop', activeUser.id);
     }
-    function openSettings(section: 'profile' | 'general' = 'general') { setSettingsSection(section); setProfileName(session?.user.displayName || session?.user.username || ''); setProfileStatus(session?.user.status || 'Доступен для общения'); setAvatarEmoji(session?.user.avatarEmoji || '🙂'); setSettingsOpen(true); }
+    function openSettings() {
+        setSettingsOpen(true);
+    }
+    function openOwnProfile() {
+        setProfileName(session?.user.displayName || session?.user.username || '');
+        setProfileStatus(session?.user.status || 'Доступен для общения');
+        setAvatarEmoji(session?.user.avatarEmoji || '🙂');
+        setProfileOpen(session?.user || null);
+    }
     async function saveProfile(e: FormEvent) {
         e.preventDefault();
         if (!session)
@@ -416,10 +423,10 @@ export default function App() {
             }} username={username} setUsername={setUsername} password={password} setPassword={setPassword} authError={authError} busy={busy} onSubmit={submitAuth}/>);
     }
     return <main className={`app-shell ${theme}`}>
-    <aside className="rail"><div className="rail-logo"><MessageCircle size={22}/></div><button className={`rail-button ${tab === 'chats' ? 'active' : ''}`} title="Чаты" onClick={() => { setTab('chats'); setActiveGroup(null); }}><MessageCircle size={21}/><span>Чаты</span></button><button className={`rail-button ${tab === 'groups' ? 'active' : ''}`} title="Группы" onClick={() => { setTab('groups'); setActiveUser(null); }}><Users size={21}/><span>Группы</span></button><button className={`rail-button ${tab === 'contacts' ? 'active' : ''}`} title="Контакты" onClick={() => { setTab('contacts'); setActiveGroup(null); }}><UserRound size={21}/><span>Люди</span></button><div className="rail-spacer"/><button className="rail-button" title="Настройки" onClick={() => openSettings()}><Settings size={21}/><span>Настройки</span></button><button className="rail-user" title="Мой профиль" onClick={() => openSettings('profile')}><Avatar name={session.user.displayName || session.user.username} id={session.user.id} size="small" emoji={session.user.avatarEmoji}/><span className="presence-dot"/></button></aside>
+    <aside className="rail"><div className="rail-logo"><MessageCircle size={22}/></div><button className={`rail-button ${tab === 'chats' ? 'active' : ''}`} title="Чаты" onClick={() => { setTab('chats'); setActiveGroup(null); }}><MessageCircle size={21}/><span>Чаты</span></button><button className={`rail-button ${tab === 'groups' ? 'active' : ''}`} title="Группы" onClick={() => { setTab('groups'); setActiveUser(null); }}><Users size={21}/><span>Группы</span></button><button className={`rail-button ${tab === 'contacts' ? 'active' : ''}`} title="Контакты" onClick={() => { setTab('contacts'); setActiveGroup(null); }}><UserRound size={21}/><span>Люди</span></button><div className="rail-spacer"/><button className="rail-button" title="Настройки" onClick={() => openSettings()}><Settings size={21}/><span>Настройки</span></button><button className="rail-user" title="Мой профиль" onClick={openOwnProfile}><Avatar name={session.user.displayName || session.user.username} id={session.user.id} size="small" emoji={session.user.avatarEmoji}/><span className="presence-dot"/></button></aside>
     <aside className={`sidebar ${activeUser || activeGroup ? 'mobile-hide' : ''}`}>
       <header className="sidebar-header"><div><div className="eyebrow">WIN STYDIO MESSENGER</div><h1>{tab === 'chats' ? 'Сообщения' : tab === 'groups' ? 'Группы' : 'Контакты'}</h1></div><button className="round-button" title={tab === 'groups' ? 'Создать группу' : 'Настройки'} onClick={() => tab === 'groups' ? setCreateGroupOpen(true) : tab === 'contacts' ? setProfileOpen(session.user) : openSettings()}>{tab === 'groups' ? <Plus size={19}/> : tab === 'contacts' ? <UserRoundPlus size={19}/> : <Settings size={18}/>}</button></header>
-      <div className="self-card" onClick={() => openSettings('profile')} role="button" tabIndex={0}><Avatar name={session.user.displayName || session.user.username} id={session.user.id} online emoji={session.user.avatarEmoji}/><div className="self-info"><strong>{session.user.displayName || session.user.username}</strong><span><i className="status-dot"/> {session.user.status || 'Доступен для общения'}</span></div><ChevronDown size={16} className="muted-icon"/></div>
+      <div className="self-card" onClick={openOwnProfile} role="button" tabIndex={0}><Avatar name={session.user.displayName || session.user.username} id={session.user.id} online emoji={session.user.avatarEmoji}/><div className="self-info"><strong>{session.user.displayName || session.user.username}</strong><span><i className="status-dot"/> {session.user.status || 'Доступен для общения'}</span></div><ChevronDown size={16} className="muted-icon"/></div>
       <div className="search-box"><Search size={16}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder={tab === 'groups' ? 'Найти группу…' : tab === 'contacts' ? 'Найти контакт…' : 'Поиск по чатам…'}/>{search && <button onClick={() => setSearch('')} aria-label="Очистить"><X size={14}/></button>}</div>
       {tab === 'chats' && <div className="filter-row"><button className={filter === 'all' ? 'selected' : ''} onClick={() => setFilter('all')}>Все <span>{users.length}</span></button><button className={filter === 'unread' ? 'selected' : ''} onClick={() => setFilter('unread')}>Непрочитанные <span>{Object.values(unread).reduce<number>((a, b) => a + Number(b), 0)}</span></button></div>}
       <div className="list-label">{tab === 'chats' ? 'ПОСЛЕДНИЕ ДИАЛОГИ' : tab === 'groups' ? 'ВАШИ ГРУППЫ' : 'СООБЩЕСТВО STYCHAT'}<span>{tab === 'groups' ? filteredGroups.length : filteredUsers.length}</span></div>
@@ -458,14 +465,32 @@ export default function App() {
             }} placeholder={activeGroup ? `Написать в «${activeGroup.name}»…` : `Сообщение для ${activeTitle}…`} maxLength={2000} rows={1}/></div><div className="composer-bottom"><div className="composer-attachments"><button type="button" title="Прикрепить фото, видео, аудио или PDF" disabled={uploadingMedia} onClick={() => mediaInputRef.current?.click()}><ImagePlus size={18}/></button><button type="button" title="Эмодзи" className={emojiOpen ? 'pressed' : ''} onClick={() => setEmojiOpen(value => !value)}><Smile size={18}/></button><span>{uploadingMedia ? 'Загружаем файл…' : 'Фото, видео, аудио, PDF · до 8 МБ'}</span></div><button className="send-button" disabled={!draft.trim() || !socketReady} aria-label="Отправить"><Send size={17}/><span>Отправить</span></button></div></form>
       </> : <div className="welcome-screen"><div className="welcome-banner"><div className="welcome-bubble bubble-one"><MessageCircle size={18}/></div><div className="welcome-bubble bubble-two"><Users size={19}/></div><div className="welcome-bubble bubble-three"><Smile size={17}/></div><div className="welcome-logo"><MessageCircle size={38}/></div></div><div className="welcome-kicker">ТВОЙ КРУГ ОБЩЕНИЯ</div><h2>Хорошие разговоры<br /><span>начинаются здесь.</span></h2><p>Выбери контакт, продолжи личный разговор<br />или создай группу для всех своих людей.</p><div className="welcome-actions"><button className="primary-button" onClick={() => { setTab('contacts'); }}><UserRoundPlus size={17}/> Найти людей</button><button className="secondary-button" onClick={() => { setTab('groups'); setCreateGroupOpen(true); }}><Users size={17}/> Создать группу</button></div><div className="welcome-foot"><span className={socketReady ? 'status-dot' : 'status-dot offline'}/>{socketReady ? 'Сервер подключён' : 'Подключаемся к серверу'}<span>·</span> Stychat от Win Stydio</div></div>}
     </section>
-    {settingsOpen && (<SettingsModal theme={theme} setTheme={setTheme} session={session} profileName={profileName} setProfileName={setProfileName} profileStatus={profileStatus} setProfileStatus={setProfileStatus} avatarEmoji={avatarEmoji} setAvatarEmoji={setAvatarEmoji} initialSection={settingsSection} onSaveProfile={saveProfile} onClose={() => setSettingsOpen(false)} onSignOut={signOut}/>)}
-    {profileOpen && (<ProfileModal user={profileOpen} currentUserId={session.user.id} onClose={() => setProfileOpen(null)} onMessage={(user) => {
-                chooseUser(user);
-                setProfileOpen(null);
-            }} onSettings={() => {
-                setProfileOpen(null);
-                openSettings('profile');
-            }}/>)}
+    {settingsOpen && (
+     <SettingsModal
+       theme={theme}
+       setTheme={setTheme}
+       onClose={() => setSettingsOpen(false)}
+       onSignOut={signOut}
+     />
+    )}
+    {profileOpen && (
+     <ProfileModal
+       user={profileOpen}
+       currentUserId={session.user.id}
+       profileName={profileName}
+       setProfileName={setProfileName}
+       profileStatus={profileStatus}
+       setProfileStatus={setProfileStatus}
+       avatarEmoji={avatarEmoji}
+       setAvatarEmoji={setAvatarEmoji}
+       onSaveProfile={saveProfile}
+       onClose={() => setProfileOpen(null)}
+       onMessage={(user) => {
+         chooseUser(user);
+         setProfileOpen(null);
+       }}
+     />
+    )}
     {groupInfoOpen && activeGroup && (<GroupDetailsModal group={activeGroup} token={session.token} onClose={() => setGroupInfoOpen(false)} onOpenProfile={(user) => {
                 setGroupInfoOpen(false);
                 setProfileOpen(user);
